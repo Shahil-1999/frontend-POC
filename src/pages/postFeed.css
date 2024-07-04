@@ -1,0 +1,14 @@
+.mr {
+    margin-top: 20px;
+}
+
+.card-text {
+    color: black;
+
+}
+
+.scrollable-card {
+    height: 272px;
+    /* Set your desired height */
+    overflow-y: auto;
+}
