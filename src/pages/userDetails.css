@@ -70,6 +70,10 @@ select {
     display: flex;
     justify-content: space-between;
 }
+.drop select, .drop1{
+    background: none;
+    
+}
 
 button {
     color: #ffffff;

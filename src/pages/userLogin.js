@@ -45,6 +45,8 @@ function UserLogin(props) {
                 localStorage.setItem("token", res.data.token)
                 localStorage.setItem("userDetailsId", res.data.userDetailsId)
                 localStorage.setItem("userName", res.data.userName)
+                localStorage.setItem("userRole", res.data.role)
+
                 
                 // console.log(localStorage.getItem("token"));
 

@@ -162,6 +162,7 @@ function PostFeed(props) {
         // console.log("details", postData);
 
         return (
+           
             postData?.data?.readAllPosts?.length ? (
 
                 postData?.data?.readAllPosts?.map((post, index) => {
@@ -172,7 +173,7 @@ function PostFeed(props) {
 
                     )
                 })
-            ) : null
+            ) : <div style={myStyle}>No Post Available</div>
         )
 
         

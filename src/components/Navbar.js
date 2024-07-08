@@ -10,7 +10,9 @@ function Navbar(props) {
     let location = useLocation()
 
     const userName = localStorage.getItem("userName")
-    console.log(userName);
+    const userRole = localStorage.getItem("userRole")
+
+    console.log("userRole",userRole);
 
 
 
@@ -28,6 +30,21 @@ function Navbar(props) {
                             <li className="nav-item">
                                 <Link className={`nav-link ${location.pathname === "/" ? "active" : ""}`} to="/">Home</Link>
                             </li>
+                            
+
+
+                            <ul className="navbar-nav">
+                                {userRole === 'ADMIN' && (
+                                    <li className="nav-item">
+                                        <Link className={`nav-link ${location.pathname === "/admin" ? "active" : ""}`} to="/admin">
+                                            Admin
+                                        </Link>
+                                    </li>
+                                )}
+                            </ul>
+
+
+
 
                             <li className="nav-item">
                                 <Link className={`nav-link ${location.pathname === "/Post" ? "active" : ""}`} to="/Post">Post</Link>

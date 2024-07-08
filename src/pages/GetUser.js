@@ -111,6 +111,8 @@ function GetUser(props) {
             <p className="card-text" style={myStyle}><span>Email: </span>{userData.email}</p>
             <p className="card-text" style={myStyle}><span>Phone Number: </span>{userData.phone_number}</p>
             <p className="card-text" style={myStyle}><span>Gender: </span>{userData.gender}</p>
+            <p className="card-text" style={myStyle}><span>Role: </span>{userData.role}</p>
+
 
 
 

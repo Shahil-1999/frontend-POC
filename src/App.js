@@ -13,6 +13,7 @@ import { useState } from 'react'
 
 import OwnPost from './pages/OwnPost'
 import ImageUpload from './pages/ImageUpload'
+import AdminDashboard from './pages/AdminDashboard'
 
 
 
@@ -74,6 +75,9 @@ function App() {
             <Route exact path='/Logout' element={<Logout />} />
             <Route exact path='/OwnPost' element={<OwnPost mode={mode} showAlert={showAlert}/>} />
             <Route exact path='/ImageUpload' element={<ImageUpload mode={mode} showAlert={showAlert}/>} />
+            <Route exact path='/admin' element={<AdminDashboard mode={mode}/>} />
+
+
             
 
 

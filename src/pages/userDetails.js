@@ -13,6 +13,7 @@ function UserDetails(props) {
         password: "",
         phone_number: "",
         gender: "",
+        role: ""
     })
 
     
@@ -53,6 +54,7 @@ function UserDetails(props) {
                     password: "",
                     phone_number: "",
                     gender: "",
+                    role: ""
                 });
                 navigate('/userLogin')
             }else{
@@ -85,13 +87,26 @@ function UserDetails(props) {
                         <input type="text" name='password' value={user.password} onChange={handleInput} placeholder="PASSWORD" />
                         <div className="beside">
                             <input type="number" name='phone_number' value={user.phone_number} onChange={handleInput} placeholder="PHONE NUMBER" />
-                            <select name='gender' value={user.gender} onChange={handleInput} >
+                            <select name='gender' className='drop1' value={user.gender} onChange={handleInput} >
                                 <option>GENDER</option>
                                 <option>MALE</option>
                                 <option>FEMALE</option>
                                 <option>NON-BINARY</option>
                             </select>
+                            
                         </div>
+                        <div className='drop'>
+                        
+                            <select name='role'value={user.role} onChange={handleInput} >
+                            <option>ROLE</option>
+
+                                <option >USER</option>
+                                <option>ADMIN</option>
+                                <option>GUEST</option>
+                                
+                            </select>
+                        </div>
+                        
                         <button type="submit" className="btn btn-primary sign_button" onClick={handleFormSubmit}>Sign In</button>
 
 
