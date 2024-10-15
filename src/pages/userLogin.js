@@ -5,12 +5,12 @@ import { useNavigate } from 'react-router-dom';
 function UserLogin(props) {
 
 
-    const [user, setUser]= useState({
+    const [user, setUser] = useState({
         email: "",
         password: ""
 
     })
-    const {showAlert}= props
+    const { showAlert } = props
 
     const handleInput = (event) => {
         // console.log(event);
@@ -24,11 +24,11 @@ function UserLogin(props) {
 
     const navigate = useNavigate()
 
-    
+
     // Handling Form Submittion
-    const handleLogin = async (event)=>{
+    const handleLogin = async (event) => {
         event.preventDefault()
-        
+
         try {
             const response = await fetch(`http://localhost:5000/user_login`, {
                 method: "POST",
@@ -38,31 +38,38 @@ function UserLogin(props) {
                 body: JSON.stringify(user)
             })
             const res = await response.json();
-            
-            if(res.status){
+            console.log(res);
+
+            if (res.status) {
                 // console.log(res.data);
 
                 localStorage.setItem("token", res.data.token)
                 localStorage.setItem("userDetailsId", res.data.userDetailsId)
                 localStorage.setItem("userName", res.data.userName)
                 localStorage.setItem("userRole", res.data.role)
+                localStorage.setItem("subscription_status", res.data.subscription_status)
+                localStorage.setItem("subscription_date", res.data.subscription_endDate)
 
-                
+
+
+
                 // console.log(localStorage.getItem("token"));
 
-               
+
                 setUser({
-                    
+
                     email: "",
                     password: "",
-                    
+
                 });
-                showAlert('success', 'user logged in sucessfully')
+                
+                    showAlert('success', 'user logged in sucessfully')
+                
                 setTimeout(() => {
                     navigate('/')
                 }, 3000);
-            }else{
-                alert("invalid credentials")
+            } else {
+                alert(res.message)
             }
             // console.log(res);
 
