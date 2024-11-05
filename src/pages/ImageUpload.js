@@ -93,18 +93,6 @@ console.log("selectedFile", selectedFile);
         }
     };
 
-
-
-
-
-
-
-
-
-
-
-
-
     return (
         <div style={myStyle}>
             <h2 >Image Upload</h2>

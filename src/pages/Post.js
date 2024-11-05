@@ -23,17 +23,6 @@ function Post(props) {
     // const userName = localStorage.getItem("userName")
 
 
-
-
-
-
-
-
-
-
-
-
-
     useEffect(() => {
         if (token === null) {
             navigate('/UserLogin')

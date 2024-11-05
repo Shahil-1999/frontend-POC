@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { addCommentsOnAnyPosts } from "../api/apis";
 
 function AddComments(props) {
     const { clickedPostData, setIsAddCommentBtnClicked, showAlert } = props
@@ -36,17 +37,8 @@ function AddComments(props) {
 
         try {
 
-            const response = await fetch(`http://localhost:5000/add_comments_on_any_post`, {
-                method: "POST",
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(comment)
-            })
-
-            const res = await response.json()
-            // console.log("ggggggggggggggggg", res);
+            const res = await addCommentsOnAnyPosts(token, comment)
+            console.log("ggggggggggggggggg", res);
 
             if (res?.status) {
                 setComment({})

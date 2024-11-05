@@ -2,7 +2,7 @@ import "./postFeed.css"
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AllPostCard from "../components/AllPostCard";
-
+import { showPostFeed } from "../api/apis";
 
 
 
@@ -81,18 +81,10 @@ function PostFeed(props) {
     const getService = async () => {
         setIsCommentDeleted(false)
         try {
-            const response = await fetch(`http://localhost:5000/read_all_post/${userDetailsId}`, {
-                method: "GET",
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    "Content-Type": "application/json"
-                },
-            });
-            const res = await response.json();
-
+            const res = await showPostFeed(token, userDetailsId)
             if (res?.status) {
                 // Filtering out deleted comments
-                const filteredPosts = res?.data?.readAllPosts?.map((post) => {
+                const filteredPosts = res?.data?.data?.readAllPosts?.map((post) => {
                     const filteredComments = post?.comments?.filter((comment) => {
                         return !comment?.is_deleted;
                     });
