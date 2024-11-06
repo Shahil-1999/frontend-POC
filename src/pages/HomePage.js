@@ -1,5 +1,4 @@
-import './homePage.css'
-
+import '../css/homePage.css'
 
 function HomePage() {
   
@@ -35,8 +34,6 @@ function HomePage() {
         </>
     )
 }
-
-
 
 export default HomePage
 

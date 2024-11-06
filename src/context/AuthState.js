@@ -1,7 +1,4 @@
 import AuthContext from "./AuthContext";
-
-
-
 const AuthState = (props) => {
     const authState = {
         token: localStorage.getItem("token"),

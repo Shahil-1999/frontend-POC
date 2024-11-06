@@ -1,60 +1,28 @@
 import React from 'react'
 import AddComments from "../pages/AddComments";
-
+import { deleteCommentsFromAnyPost } from '../api/apis';
 
 function AllPostCard(props) {
     const userDetailsId = localStorage.getItem('userDetailsId')
     const token = localStorage.getItem('token')
-
-
     const { viewCommentsList, showCommentSection, myStyle, post, isAddCommentBtnClicked, index, clickedPostData, isUserCommentsToggleBtnClicked, showAlert, setIsAddCommentBtnClicked, setIsCommentDeleted} = props
-    // console.log("pppppppppppppp", props);
-
-
-
-
-
 
     const deleteOwnCommentsInAnyPost = async (event, comment) => {
-        // console.log("commentsId", commentsId);
         event.preventDefault()
         const commentId = comment.id
-
         try {
-            // console.log("aaaaaaaaaaaaaaaa", comment);
-
-            // console.log("pppppp", postId);
-
-            const response = await fetch(`http://localhost:5000/delete_own_comments_in_any_post/${userDetailsId}/${commentId}`, {
-                method: "DELETE",
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    "Content-Type": "application/json"
-                },
-            })
-            const res = await response.json();
-            if (res?.status) {
-                // console.log("res?.status", res?.status);
+            const res = await deleteCommentsFromAnyPost(userDetailsId, commentId, token)
+            if (res?.data?.status) {
                 setIsCommentDeleted(true)
                 showAlert('success', "comment deleted")
 
             } else {
                 showAlert('success', "comment not deleted")
             }
-
-
-
         } catch (error) {
             console.log(error);
         }
-
     }
-
-
-
-
-
-
 
     return (
         <>
@@ -68,23 +36,11 @@ function AllPostCard(props) {
 
                         <button type="button" class="btn btn-primary" onClick={(event) => showCommentSection(event, index, post)}>Add Comments</button>
 
-
-
-
-                        {/* {console.log("isAddCommentBtnClicked", isAddCommentBtnClicked, "index", index)} */}
-
                         {isAddCommentBtnClicked === index && <AddComments clickedPostData={clickedPostData} setIsAddCommentBtnClicked={setIsAddCommentBtnClicked} showAlert={showAlert} />}
 
                         <button type="button" class="btn btn-primary mx-2" onClick={(event) => viewCommentsList(event, index, post)}>{isUserCommentsToggleBtnClicked === index ? "Hide Comments" : "Show Comments"}</button>
 
-
-
-
-
-
-
                         {isUserCommentsToggleBtnClicked === index && post?.comments?.length > 0 && post?.comments?.map((comment) => {
-                            {/* { console.log("logggggggggggggggg", comment); */ }
 
                             return (
                                 <>
@@ -94,22 +50,8 @@ function AllPostCard(props) {
                                                 <p className="card-title">{comment.user_name} : </p>
                                                 <p className="card-title">
                                                     {comment.comments}
-
                                                 </p>
                                                 {+userDetailsId === comment?.userDetailsId ? <i className="fa-solid fa-trash-can my-1" onClick={(event) => deleteOwnCommentsInAnyPost(event, comment)}></i> : null}
-
-                                                
-                                                
-
-
-                                                
-                                                
-                                            
-                        {/* {console.log("commentssssssssssss", comment)} */}
-
-
-
-
                                             </div>
                                         </div>
 

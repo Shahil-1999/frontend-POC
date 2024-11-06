@@ -36,15 +36,10 @@ function App() {
       setMode('light')
       setCheckBtn('Enable Dark Mode')
       document.body.style.backgroundColor = "white"
-   
-
       showAlert('success', "Light mode has been enabled")
     }
   }
-
-
   const [alert, setAlert] = useState(null)
-
   const showAlert = (type, message) => {
 
     setAlert({
@@ -56,7 +51,6 @@ function App() {
 
     }, 3000);
   }
-
 
   return (
     <div className="App">
@@ -76,17 +70,9 @@ function App() {
             <Route exact path='/OwnPost' element={<OwnPost mode={mode} showAlert={showAlert}/>} />
             <Route exact path='/ImageUpload' element={<ImageUpload mode={mode} showAlert={showAlert}/>} />
             <Route exact path='/admin' element={<AdminDashboard mode={mode}/>} />
-
-
-            
-
-
-
           </Routes>
         </BrowserRouter>
     </div>
-
-
   );
 }
 

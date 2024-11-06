@@ -2,19 +2,12 @@ import { deleteAccount } from './common';
 import './Navbar.css'
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
-
-
-
 function Navbar(props) {
     const navigate = useNavigate()
     let location = useLocation()
-
     const userName = localStorage.getItem("userName")
     const userRole = localStorage.getItem("userRole")
-
-    console.log("userRole",userRole);
-
-
+    const token = localStorage.getItem('token')
 
     return (
         <div>
@@ -30,8 +23,6 @@ function Navbar(props) {
                             <li className="nav-item">
                                 <Link className={`nav-link ${location.pathname === "/" ? "active" : ""}`} to="/">Home</Link>
                             </li>
-                            
-
 
                             <ul className="navbar-nav">
                                 {userRole === 'ADMIN' && (
@@ -42,30 +33,27 @@ function Navbar(props) {
                                     </li>
                                 )}
                             </ul>
+                            {token && <>
 
+                                <li className="nav-item">
+                                    <Link className={`nav-link ${location.pathname === "/Post" ? "active" : ""}`} to="/Post">Post</Link>
+                                </li>
 
+                                <li className="nav-item">
+                                    <Link className={`nav-link ${location.pathname === "/PostFeed" ? "active" : ""}`} to="/PostFeed">PostFeed</Link>
+                                </li>
 
-
-                            <li className="nav-item">
-                                <Link className={`nav-link ${location.pathname === "/Post" ? "active" : ""}`} to="/Post">Post</Link>
-                            </li>
-
-                            <li className="nav-item">
-                                <Link className={`nav-link ${location.pathname === "/PostFeed" ? "active" : ""}`} to="/PostFeed">PostFeed</Link>
-                            </li>
-
-                            <li className="nav-item dropdown">
-                                <Link className="nav-link dropdown-toggle" to="/" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    User Post
-                                </Link>
-                                <ul className="dropdown-menu">
-                                    <li><Link className="dropdown-item" to="/OwnPost">Own Post</Link></li>
-                                    <li><Link className="dropdown-item" onClick={() => deleteAccount(navigate)} to="/">Delete Account</Link></li>
-
-
-                                </ul>
-                            </li>
-
+                                <li className="nav-item dropdown">
+                                    <Link className="nav-link dropdown-toggle" to="/" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        User Post
+                                    </Link>
+                                    <ul className="dropdown-menu">
+                                        <li><Link className="dropdown-item" to="/OwnPost">Own Post</Link></li>
+                                        <li><Link className="dropdown-item" onClick={() => deleteAccount(navigate)} to="/">Delete Account</Link></li>
+                                    </ul>
+                                </li>
+                            </>
+                            }
 
                             <li className="nav-item">
                                 <Link className={`nav-link ${location.pathname === "/userLogin" ? "active" : ""}`} to={userName ? '/Profile' : '/UserLogin'}>{userName ? userName : 'Login'}</Link>
@@ -74,10 +62,6 @@ function Navbar(props) {
                             <li className="nav-item">
                                 {!userName && <Link className={`nav-link ${location.pathname === "/userDetails" ? "active" : ""}`} to="/UserDetails">Sign In</Link>}
                             </li>
-
-
-
-
 
                             <li className="nav-item">
                                 {userName && <Link className={`nav-link ${location.pathname === "/Logout" ? "active" : ""}`} to="/Logout">Logout</Link>}

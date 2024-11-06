@@ -1,7 +1,6 @@
 import React,{useState} from 'react'
 import EditOwnComments from '../pages/EditOwnComments'
 
-
 function EditDeleteCommentSection(props) {
     const [editcommentsData, setEditCommentsData] = useState({})
     const userDetailsId = localStorage.getItem('userDetailsId')
@@ -19,15 +18,9 @@ function EditDeleteCommentSection(props) {
 
 
                             {+userDetailsId === comment?.userDetailsId ? <i className="fa-solid fa-pen-to-square mx-2" onClick={() => showCommentsEditPage({ isCommentsUpdateBtnClicked, setIsCommentsUpdateBtnClicked, setEditCommentsData, commentsIndex, comment })}></i> : null}
-
                         </div>
-
-                        {/* {console.log("ccccccccccccc", userDetailsId, comment?.userDetailsId, +userDetailsId===comment?.userDetailsId)} */}
-
-
-
+                        
                         {+userDetailsId === comment?.userDetailsId && isCommentsUpdateBtnClicked === commentsIndex && <EditOwnComments editcommentsData={editcommentsData} setEditCommentsData={setEditCommentsData} setIsCommentsUpdateBtnClicked={setIsCommentsUpdateBtnClicked} updateComments={getService} showAlert={showAlert} />}
-                        {/* {console.log("commentssssssssssss", comment)} */}
                     </div>
                 </div>
             </div>

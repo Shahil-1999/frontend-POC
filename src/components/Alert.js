@@ -1,7 +1,6 @@
 import React from 'react'
 
 function Alert(props) {
-    console.log("props, props", props);
 
     return (
         <>

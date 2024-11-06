@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import { getUser } from '../api/apis';
+import { getUserProfileImage } from '../api/apis';
 
 function GetUser(props) {
   const [userData, setUserData] = useState([]);
@@ -16,18 +17,11 @@ function GetUser(props) {
     try {
       const token = localStorage.getItem("token");
       const userDetailsId = localStorage.getItem("userDetailsId");
-      const url = `http://localhost:5000/user_details/${userDetailsId}`;
 
-      const response = await fetch(url, {
-        method: "GET",
-        headers: {
-          'Authorization': `Bearer ${token}`
-        },
-      });
-      const res = await response.json();
+      const res = await getUser(token, userDetailsId)
 
-      if (res?.status) {
-        setUserData(res?.data);
+      if (res?.data?.status) {
+        setUserData(res?.data?.data);
       } else {
         navigate('/UserLogin');
       }
@@ -36,29 +30,15 @@ function GetUser(props) {
     }
   };
 
-
-
   const getProfileImage = async () => {
     try {
       const token = localStorage.getItem("token");
       const userDetailsId = localStorage.getItem("userDetailsId");
+      const res = await getUserProfileImage(token, userDetailsId)
 
-      const url = `http://localhost:5000/get_profile_image/${userDetailsId}`;
+      if (res?.data?.status) {
 
-      const response = await fetch(url, {
-        method: "GET",
-        headers: {
-          'Authorization': `Bearer ${token}`
-        },
-      });
-
-      const res = await response.json();
-      // console.log("resssssssssssssssssssssssssssssssss get userrrrrrr", res);
-
-      if (res?.status) {
-
-        const base64String = btoa(String.fromCharCode(...new Uint8Array(res.data.fileData.data)));
-
+        const base64String = btoa(String.fromCharCode(...new Uint8Array(res.data?.data?.fileData?.data)));
         setImageData(`data:image/png;base64, ${base64String}`);
 
         // const base64Image = res.data.fileData.data.toString('base64');
@@ -105,19 +85,11 @@ function GetUser(props) {
                 <img style={{ height: "100px", width: "100px", borderRadius: "50px" }} src={imageData} alt="Profile Img" />
               )}
             </div>
-
-
             <p className="card-title" style={myStyle}><span>Name: </span>{userData.name}</p>
             <p className="card-text" style={myStyle}><span>Email: </span>{userData.email}</p>
             <p className="card-text" style={myStyle}><span>Phone Number: </span>{userData.phone_number}</p>
             <p className="card-text" style={myStyle}><span>Gender: </span>{userData.gender}</p>
             <p className="card-text" style={myStyle}><span>Role: </span>{userData.role}</p>
-
-
-
-
-
-
           </div>
         </div>
       </div>

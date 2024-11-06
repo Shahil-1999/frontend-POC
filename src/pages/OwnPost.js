@@ -2,31 +2,24 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import UpdatePost from './UpdatePost';
 import AddComments from "./AddComments";
-import './postFeed.css'
-import EditOwnComments from './EditOwnComments';
+import '../css/postFeed.css'
 import Alert from '../components/Alert';
 import { showCommentsEditPage } from '../components/common'
 import EditDeleteCommentSection from '../components/EditDeleteCommentSection';
+import { deleteCommentsFromOwnPost } from '../api/apis';
+import { readOwnPost } from '../api/apis';
+import { postDelete } from '../api/apis';
 
 function OwnPost(props) {
     const [ownPostData, setPostData] = useState([]) //c
     const [myStyle, setMyStyle] = useState()
     const [isDeleted, setIsDeleted] = useState(false)   //c
     const [editPostData, setEditPostData] = useState({})
-
-
     const [isCommentsUpdateBtnClicked, setIsCommentsUpdateBtnClicked] = useState(false)  //c
-
     const [isAddCommentBtnClicked, setIsAddCommentBtnClicked] = useState(false)
-
     const [clickedPostData, setClickedPostData] = useState({})
-
     const [alert, setAlert] = useState(null)
-
     const [isUserCommentsToggleBtnClicked, setIsUserCommentsToggleBtnClicked] = useState(false)
-    // const [remainingComments, setRemainingComments] = useState([])
-
-
     const [isCommentDeleted, setIsCommentDeleted] = useState(false)
     const [isUpdated, setIsUpdated] = useState(false)
     const [isUpdateBtnClicked, setIsUpdateBtnClicked] = useState(false)  //c
@@ -34,36 +27,17 @@ function OwnPost(props) {
     const token = localStorage.getItem("token")
     const userDetailsId = localStorage.getItem("userDetailsId")
 
-
-
     const { mode, showAlert } = props
-
-
-
-
     const getService = async () => {
         setIsDeleted(false)
         setIsUpdated(false)
         setIsCommentDeleted(false)
         setIsCommentsUpdateBtnClicked(false)
 
-
-
         try {
-            const response = await fetch(`http://localhost:5000/read_own_post/${userDetailsId}`, {
-                method: "GET",
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    "Content-Type": "application/json"
-                },
-            })
-            const res = await response.json();
-            // console.log("getComment",res);
-
-
-            if (res?.status) {
-                // Filtering out deleted comments
-                const filteredPosts = res?.data?.readOwnPosts?.map((post) => {
+            const res = await readOwnPost(token, userDetailsId)
+            if (res?.data?.status) {
+                const filteredPosts = res?.data?.data?.readOwnPosts?.map((post) => {
                     const filteredComments = post?.comments?.filter((comment) => {
                         return !comment?.is_deleted;
                     });
@@ -80,17 +54,10 @@ function OwnPost(props) {
 
         } catch (error) {
             console.log(error);
-
         }
     }
 
-
-
-
-
-
     useEffect(() => {
-        // console.log(isDeleted);
         getService()
         // eslint-disable-next-line
     }, [isDeleted, isUpdated, isUserCommentsToggleBtnClicked, isCommentDeleted, isAddCommentBtnClicked])
@@ -118,20 +85,9 @@ function OwnPost(props) {
     const deletePost = async (post) => {
 
         try {
-            // console.log("aaaaaaaaaaaaaaaa", post);
             const postId = post.id
-            // console.log("pppppp", postId);
-
-            const response = await fetch(`http://localhost:5000/delete_post/${userDetailsId}/${postId}`, {
-                method: "DELETE",
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    "Content-Type": "application/json"
-                },
-            })
-            const res = await response.json();
-            // console.log(res);
-            if (res?.status) {
+            const res = await postDelete(token, userDetailsId, postId)
+            if (res?.data?.status) {
                 setIsDeleted(true)
                 showAlert('success', "Post deleted")
 
@@ -145,27 +101,12 @@ function OwnPost(props) {
 
     }
 
-
     const deletePostComment = async (event, commentId) => {
-        // console.log("commentsId", commentsId);
         event.preventDefault()
 
         try {
-            // console.log("aaaaaaaaaaaaaaaa", post);
-
-            // console.log("pppppp", postId);
-
-            const response = await fetch(`http://localhost:5000/delete_own_post_comment/${userDetailsId}/${commentId}`, {
-                method: "DELETE",
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    "Content-Type": "application/json"
-                },
-            })
-            const res = await response.json();
-            // console.log("delete post commenttttttt", res?.data?.is_deleted);
-            if (res?.status) {
-                // console.log("res?.status", res?.status);
+            const res = await deleteCommentsFromOwnPost(userDetailsId, commentId, token)
+            if (res?.data?.status) {
                 setIsCommentDeleted(true)
                 showAlert('success', "comment deleted")
 
@@ -173,19 +114,10 @@ function OwnPost(props) {
                 showAlert('success', "comment not deleted")
             }
 
-
         } catch (error) {
             console.log(error);
         }
-
     }
-
-
-
-
-
-
-
     const showPostEditPage = (index, post) => {
         if (isUpdateBtnClicked !== false) {
             setIsUpdateBtnClicked(false);
@@ -193,63 +125,35 @@ function OwnPost(props) {
             setIsUpdateBtnClicked(index)
             setEditPostData(post)
         }
-
     }
 
-
-
     const viewCommentsList = (event, index, post) => {
-        // console.log("isUserCommentsToggleBtnClicked", index, post);
         event.preventDefault()
         if (isUserCommentsToggleBtnClicked !== false) {
             setIsUserCommentsToggleBtnClicked(false);
-
         } else {
-
             setIsUserCommentsToggleBtnClicked(index)
-
-
-
         }
-
     }
-
 
     const showCommentSection = (event, index, post) => {
         event.preventDefault()
 
-        // console.log("isAddCommentBtnClicked",isAddCommentBtnClicked);
         if (isAddCommentBtnClicked !== false) {
             setIsAddCommentBtnClicked(false);
         } else {
-
             setIsAddCommentBtnClicked(index);
             setClickedPostData(post)
         }
-
-
     }
 
-
-
-
-
-
-
     const showPostDetails = (postData) => {
-        // console.log("details", postData);
 
         return (
-
             postData?.data?.readOwnPosts?.length === 0 ? <div style={myStyle}>No Post Available</div> : (
                 postData?.data?.readOwnPosts?.map((post, index) => {
-
-
                     return (
                         <>
-
-
-
                             <div className="col-sm-6 mb-3 mb-sm-my-3">
                                 <div className="card scrollable-card" style={myStyle}>
 
@@ -282,14 +186,9 @@ function OwnPost(props) {
                                             state="hover-line">
                                         </lord-icon>
 
-
-
                                         {/* {console.log("isUpdateBtnClicked",isUpdateBtnClicked, "index",index)} */}
 
-
-
                                         {/* Show Comments Section Icon */}
-
 
                                         {/* <i className=' mx-2' onClick={(event) => viewCommentsList(event, index, post)}>
                                             {isUserCommentsToggleBtnClicked === index ? <i className="fa-solid fa-eye-slash"></i> : <i className="fa-solid fa-eye"></i>}
@@ -322,18 +221,12 @@ function OwnPost(props) {
                                             trigger="hover">
                                         </lord-icon>
 
-
-
                                         {/* Edit Your Post */}
 
                                         {isUpdateBtnClicked === index && <UpdatePost postData={editPostData} setIsUpdated={setIsUpdated} setIsUpdateBtnClicked={setIsUpdateBtnClicked} showAlert={showAlert} />}
 
-
-
-
-
                                         {/*Add your Comments*/}
-                                        
+
                                         {/* {console.log("isAddCommentBtnClicked", isAddCommentBtnClicked, "index", index)} */}
 
                                         {isAddCommentBtnClicked === index && <AddComments clickedPostData={clickedPostData} setIsAddCommentBtnClicked={setIsAddCommentBtnClicked} showAlert={showAlert} />}

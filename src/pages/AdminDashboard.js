@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { userDetailsAdmin } from '../api/apis';
+import { getAllProfileImage } from '../api/apis';
 
 function AdminDashboard(props) {
     const [userData, setUserData] = useState([]);
     const [imageData, setImageData] = useState({}); // Changed to an object for multiple images
-
     const [myStyle, setMyStyle] = useState({
         color: "black",
         backgroundColor: "white"
@@ -16,18 +17,10 @@ function AdminDashboard(props) {
         try {
             const token = localStorage.getItem("token");
             const userDetailsId = localStorage.getItem("userDetailsId");
-            const url = `http://localhost:5000/user_details_admin/${userDetailsId}`;
+            const res = await userDetailsAdmin(token, userDetailsId)
 
-            const response = await fetch(url, {
-                method: "GET",
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                },
-            });
-            const res = await response.json();
-
-            if (res?.status) {
-                setUserData(res?.data);
+            if (res?.data?.status) {
+                setUserData(res?.data?.data);
             } else {
                 navigate('/UserLogin');
             }
@@ -67,29 +60,15 @@ function AdminDashboard(props) {
         try {
             const token = localStorage.getItem("token");
             const userDetailsId = localStorage.getItem("userDetailsId");
+            const res = await getAllProfileImage(token, userDetailsId)
 
-            const url = `http://localhost:5000/get_all_profile_image/${userDetailsId}`;
-
-            const response = await fetch(url, {
-                method: "GET",
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                },
-            });
-
-            const res = await response.json();
-
-            if (res?.status) {
+            if (res?.data?.status) {
                 const images = {};
-                res.data.forEach((image) => {
-
-                    console.log("imageeeeeeeeeeeeeeeee", image
-                    );
+                res?.data?.data?.forEach((image) => {
                     const base64String = btoa(String.fromCharCode(...new Uint8Array(image.fileData.data)));
                     images[image.userDetailsId] = `data:image/png;base64, ${base64String}`;
                 });
                 setImageData(images); // Store images with userId as key
-                // console.log(imageData);
             }
         } catch (error) {
             console.log(error);
@@ -99,8 +78,6 @@ function AdminDashboard(props) {
     const showPostDetails = (userData, myStyle) => {
         return userData.length ? (
             userData.map((user, index) => (
-                
-                
                 <div key={index} className="mr h-100 d-flex align-items-center justify-content-center">
                     <div className="col-sm-6 mb-3 mb-sm-0">
                         <div className="card" style={myStyle}>

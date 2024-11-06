@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
-import './userLogin.css'
+import '../css/userLogin.css'
 import { useNavigate } from 'react-router-dom';
+import { userLogin } from '../api/apis';
 
 function UserLogin(props) {
-
-
     const [user, setUser] = useState({
         email: "",
         password: ""
@@ -23,44 +22,24 @@ function UserLogin(props) {
     }
 
     const navigate = useNavigate()
-
-
     // Handling Form Submittion
     const handleLogin = async (event) => {
         event.preventDefault()
 
         try {
-            const response = await fetch(`http://localhost:5000/user_login`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(user)
-            })
-            const res = await response.json();
-            console.log(res);
-
-            if (res.status) {
-                // console.log(res.data);
-
-                localStorage.setItem("token", res.data.token)
-                localStorage.setItem("userDetailsId", res.data.userDetailsId)
-                localStorage.setItem("userName", res.data.userName)
-                localStorage.setItem("userRole", res.data.role)
-                localStorage.setItem("subscription_status", res.data.subscription_status)
-                localStorage.setItem("subscription_date", res.data.subscription_endDate)
-
-
-
-
-                // console.log(localStorage.getItem("token"));
-
+            const res = await userLogin(user)
+            
+            if (res?.data?.status) {
+                localStorage.setItem("token", res?.data?.data?.token)
+                localStorage.setItem("userDetailsId", res?.data?.data?.userDetailsId)
+                localStorage.setItem("userName", res?.data?.data?.userName)
+                localStorage.setItem("userRole", res?.data?.data?.role)
+                localStorage.setItem("subscription_status", res?.data?.data?.subscription_status)
+                localStorage.setItem("subscription_date", res?.data?.data?.subscription_endDate)
 
                 setUser({
-
                     email: "",
                     password: "",
-
                 });
                 
                     showAlert('success', 'user logged in sucessfully')
@@ -69,10 +48,8 @@ function UserLogin(props) {
                     navigate('/')
                 }, 3000);
             } else {
-                alert(res.message)
+                alert(res?.data?.message)
             }
-            // console.log(res);
-
 
         } catch (error) {
             console.log(error);
@@ -80,36 +57,23 @@ function UserLogin(props) {
 
     }
 
-
-
-
     return (
-
         <>
             <div className="container">
-
                 <div className="content">
                     <img src="https://res.cloudinary.com/debbsefe/image/upload/f_auto,c_fill,dpr_auto,e_grayscale/image_fz7n7w.webp" alt="" className="cld-responsive" />
                     <h1 className="form-title">Login Here</h1>
                     <form onSubmit={handleLogin}>
-
-
                         <input type="email" name='email' value={user.email} onChange={handleInput} placeholder="EMAIL ADDRESS" />
                         <input type="text" name='password' value={user.password} onChange={handleInput} placeholder="PASSWORD" />
                         <button type="submit" className="btn btn-primary login_button">Login</button>
-
-
                     </form>
                 </div>
             </div>
-
-
         </>
 
     )
 }
-
-
 
 export default UserLogin
 

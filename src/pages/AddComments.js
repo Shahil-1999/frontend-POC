@@ -6,13 +6,9 @@ function AddComments(props) {
     const [comment, setComment] = useState({})
     const token = localStorage.getItem("token")
     const userDetailsId = localStorage.getItem('userDetailsId')
-  
-
     const handleCommentInput = (event) => {
         let name = event.target.name
         let value = event.target.value
-        // console.log(name, value);
-
             setComment({
                 ...comment,
                 userDetailsId: userDetailsId,
@@ -22,25 +18,14 @@ function AddComments(props) {
             })
         
     }
-
-// useEffect(()=>{
-// console.log("comments", comment?.comments);
-// },[comment?.comments])
-
-
-    // console.log("cccccccccccc",clickedPostData);
     const handleCommentFormSubmit = async (event) => {
         event.preventDefault()
-
-
-
 
         try {
 
             const res = await addCommentsOnAnyPosts(token, comment)
-            console.log("ggggggggggggggggg", res);
 
-            if (res?.status) {
+            if (res?.data?.status) {
                 setComment({})
                 setIsAddCommentBtnClicked(false)
                 showAlert("success", "Comment Added")
@@ -55,28 +40,13 @@ function AddComments(props) {
 
     }
 
-    // console.log("commentssssssssssss", comment.comments.length);
-
-
-
-
-
-
     return (
-
 
         <div>
             <form >
-            {/* {console.log("comment?.comments?.length", comment?.comments?.length, comment?.comments)} */}
             <h4 className='my-4' style={{color: "black", textAlign: "center"}}>Add Your Comments</h4>
-
-
-
                 <input type="text" name='comments' onChange={handleCommentInput} placeholder="POST COMMENTS" />
                 <button disabled={!comment?.comments} type="submit" className="btn btn-primary sign_button" onClick={handleCommentFormSubmit}>Comment</button>
-
-
-
             </form>
         </div>
     )

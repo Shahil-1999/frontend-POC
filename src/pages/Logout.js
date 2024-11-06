@@ -12,12 +12,9 @@ function Logout() {
         (localStorage.getItem("token") === null) ? navigate('/UserLogin') : navigate('/Logout')
     })
 
-
     return (
 
-        <>
-
-        </>
+        <> </>
     )
 }
 
