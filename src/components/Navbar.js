@@ -10,7 +10,8 @@ function Navbar(props) {
     const token = localStorage.getItem('token')
 
     return (
-        <div>
+        
+        <>
             <nav className={`navbar navbar-expand-lg navbar-${props.mode} bg-${props.mode}`}>
                 <div className="container-fluid">
                     <Link className="navbar-brand" to="/">frontend-POC-react </Link>
@@ -80,7 +81,7 @@ function Navbar(props) {
                 </div>
             </nav>
 
-        </div>
+        </>
     )
 }
 

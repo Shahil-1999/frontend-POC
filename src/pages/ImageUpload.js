@@ -73,11 +73,13 @@ function ImageUpload(props) {
     };
 
     return (
-        <div style={myStyle}>
-            <h2 >Image Upload</h2>
-            <input type="file" onChange={handleFileChange} value={selectedFile ? selectedFile.filename   : ''} />
-            <button onClick={(event) => handleUpload(event)}>Upload</button>
-        </div>
+        <>
+            <div style={myStyle}>
+                <h2 >Image Upload</h2>
+                <input type="file" onChange={handleFileChange} value={selectedFile ? selectedFile.filename : ''} />
+                <button onClick={(event) => handleUpload(event)}>Upload</button>
+            </div>
+        </>
     );
 }
 

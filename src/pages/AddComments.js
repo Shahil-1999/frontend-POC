@@ -42,13 +42,13 @@ function AddComments(props) {
 
     return (
 
-        <div>
+        <>
             <form >
             <h4 className='my-4' style={{color: "black", textAlign: "center"}}>Add Your Comments</h4>
                 <input type="text" name='comments' onChange={handleCommentInput} placeholder="POST COMMENTS" />
                 <button disabled={!comment?.comments} type="submit" className="btn btn-primary sign_button" onClick={handleCommentFormSubmit}>Comment</button>
             </form>
-        </div>
+        </>
     )
 }
 

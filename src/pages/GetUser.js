@@ -76,24 +76,26 @@ function GetUser(props) {
   }, [mode]);
 
   return (
-    <div className="mr h-100 d-flex align-items-center justify-content-center">
-      <div className="col-sm-6 mb-3 mb-sm-0">
-        <div className="card" style={myStyle}>
-          <div className="card-body getUserCardText">
-            <div className='my-2'>
-              {imageData && (
-                <img style={{ height: "100px", width: "100px", borderRadius: "50px" }} src={imageData} alt="Profile Img" />
-              )}
+    <>
+      <div className="mr h-100 d-flex align-items-center justify-content-center">
+        <div className="col-sm-6 mb-3 mb-sm-0">
+          <div className="card" style={myStyle}>
+            <div className="card-body getUserCardText">
+              <div className='my-2'>
+                {imageData && (
+                  <img style={{ height: "100px", width: "100px", borderRadius: "50px" }} src={imageData} alt="Profile Img" />
+                )}
+              </div>
+              <p className="card-title" style={myStyle}><span>Name: </span>{userData.name}</p>
+              <p className="card-text" style={myStyle}><span>Email: </span>{userData.email}</p>
+              <p className="card-text" style={myStyle}><span>Phone Number: </span>{userData.phone_number}</p>
+              <p className="card-text" style={myStyle}><span>Gender: </span>{userData.gender}</p>
+              <p className="card-text" style={myStyle}><span>Role: </span>{userData.role}</p>
             </div>
-            <p className="card-title" style={myStyle}><span>Name: </span>{userData.name}</p>
-            <p className="card-text" style={myStyle}><span>Email: </span>{userData.email}</p>
-            <p className="card-text" style={myStyle}><span>Phone Number: </span>{userData.phone_number}</p>
-            <p className="card-text" style={myStyle}><span>Gender: </span>{userData.gender}</p>
-            <p className="card-text" style={myStyle}><span>Role: </span>{userData.role}</p>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
